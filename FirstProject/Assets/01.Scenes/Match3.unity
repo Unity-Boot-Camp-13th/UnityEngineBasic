@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 82147825}
   - component: {fileID: 82147824}
   m_Layer: 0
-  m_Name: Bound (2)
+  m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 531131927}
   - component: {fileID: 531131926}
   m_Layer: 0
-  m_Name: Bound
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -558,6 +558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 625672885}
+  - component: {fileID: 625672886}
   m_Layer: 0
   m_Name: Bounds
   m_TagString: Untagged
@@ -584,6 +585,23 @@ Transform:
   - {fileID: 1210042887}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &625672886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625672884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2bedc2e270d0249bd6c248c05a8eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _map: {fileID: 653067391}
+  _back: {fileID: 1210042887}
+  _bottom: {fileID: 82147823}
+  _left: {fileID: 531131925}
+  _right: {fileID: 1324897271}
 --- !u!1 &653067390
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,7 +635,7 @@ MonoBehaviour:
   _sizeY: 12
   _nodeWidth: 1
   _nodeHeight: 1
-  _bottomCenter: {x: 0, y: 0, z: 0}
+  _center: {x: 0, y: 0, z: 0}
   _basicBlocks:
   - {fileID: 3475071439040516963, guid: 1239e75b3ad583c4a84b295247b24645, type: 3}
   - {fileID: 3475071439040516963, guid: 26f51df00d87c364cb6d82228b8d4123, type: 3}
@@ -625,6 +643,9 @@ MonoBehaviour:
   - {fileID: 3475071439040516963, guid: c8d5153251c32c94ea31fef7e89f901e, type: 3}
   - {fileID: 3475071439040516963, guid: 235ca0d608a57c642a6966abfa1ca7a8, type: 3}
   - {fileID: 3475071439040516963, guid: b4ef1ebc0304cb54b8f2e4c40bf28d20, type: 3}
+  _camera: {fileID: 330585545}
+  _oscillationAmplitude: {x: 5, y: 5, z: 5}
+  _oscillationVelocity: {x: 10, y: 10, z: 10}
 --- !u!4 &653067392
 Transform:
   m_ObjectHideFlags: 0
@@ -701,7 +722,7 @@ GameObject:
   - component: {fileID: 1210042889}
   - component: {fileID: 1210042888}
   m_Layer: 0
-  m_Name: Bound (3)
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -787,7 +808,7 @@ GameObject:
   - component: {fileID: 1324897273}
   - component: {fileID: 1324897272}
   m_Layer: 0
-  m_Name: Bound (1)
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

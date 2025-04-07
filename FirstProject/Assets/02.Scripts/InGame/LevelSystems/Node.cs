@@ -4,13 +4,17 @@ namespace Match3.InGame.LevelSystems
 {
     public class Node
     {
-        public Node(int x, int y, NodeTypes typeFlags)
+        public Node(int x, int y, NodeTypes typeFlags, Transform block)
         {
-
+            X = x;
+            Y = y;
+            TypeFlags = typeFlags;
+            Block = block;
         }
 
         public int X;
         public int Y;
         public NodeTypes TypeFlags;
+        public Transform Block;
     }
 }

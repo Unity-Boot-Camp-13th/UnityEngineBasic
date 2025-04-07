@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using UnityEngine;
 
 // Monobehaviour : 개발자가 Unity Engine의 GameObject에 직접 백엔드 로직을 부여하는 컴포넌트를 추가하고 싶을 때 작성하는 단위

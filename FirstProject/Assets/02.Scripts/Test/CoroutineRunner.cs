@@ -107,7 +107,7 @@ public class WaitForSecondsYield : Yield
     private float _seconds; // 기다릴 시간
 
     public WaitForSecondsYield(float seconds)
-    {
+    {                                                             
         TimeMark = Time.time;
         _seconds = seconds;
     }
