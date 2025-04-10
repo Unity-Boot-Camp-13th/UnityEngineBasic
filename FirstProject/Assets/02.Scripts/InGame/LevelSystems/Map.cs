@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using Random = UnityEngine.Random; // 모호한 참조에 대한 명시를 하는 using 키워드
 
 namespace Match3.InGame.LevelSystems
@@ -11,6 +12,25 @@ namespace Match3.InGame.LevelSystems
     public class Map : MonoBehaviour
     {
         public bool EnableInput { get; set; }
+
+        public int Score
+        {
+            get => _score;
+            set
+            {
+                if (_score == value)
+                    return;
+
+                _score = value;
+                OnScoreChanged?.Invoke(Score, _comboStack);
+            }
+        }
+
+        public const int SCORE_PER_BLOCK = 500;
+        public const float POWER_PER_COMBO_STACK = 1.2f;
+        private int _score;
+        private int _comboStack;
+        private int _destroyCount;
 
         [Header("Map spec")]
         [SerializeField] int _sizeX = 8;
@@ -50,6 +70,7 @@ namespace Match3.InGame.LevelSystems
         [Header("Start Counting")]
         [SerializeField] TextMeshPro _startCounting;
 
+
         List<(int x, int y)> _changedIndices; // 변경된 노드의 임시 캐싱
 
         (int x, int y) _selectedIndex = (-1, -1);
@@ -57,7 +78,7 @@ namespace Match3.InGame.LevelSystems
         bool IsSelected => _selectedIndex.Item1 >= 0 && _selectedIndex.Item2 >= 0;
 
         public event Action<int, int, float, float, Vector3> OnMapCreated;
-
+        public event Action<int, int> OnScoreChanged;
 
         private void Awake()
         {
@@ -211,6 +232,7 @@ namespace Match3.InGame.LevelSystems
             _startCounting.text = "뻥이야";
             yield return waitfor1seconds;
             _startCounting.enabled = false;
+            
             yield return C_MatchAll(); // Coroutine이 한 개이고, 현재 이 라인에서는 IEnumerator의 yield로 반환, yield 하는 Coroutine이 멈추면 얘 수행 안 함
             // yield return StartCoroutine(C_MatchAll()); // 별도의 Coroutine을 만들어서 수행, yield 하는 Coroutine이 멈추어도 얘는 돌아감
             EnableInput = true;
@@ -218,11 +240,15 @@ namespace Match3.InGame.LevelSystems
 
         IEnumerator C_MatchAll()
         {
+            _comboStack = 0;
             MatchForAllIndices();
+            yield return new WaitUntil(() => _animationCount == 0); // 애니메이션 코루틴 종료될 때까지 대기
+            Score += CalcScore();
 
             // 변경된 인덱스가 남지 않을 때까지 매치 반복
             while (_changedIndices.Count > 0)
             {
+                _comboStack++;
                 yield return new WaitUntil(() => _animationCount == 0); // 애니메이션 코루틴 모두 종료될 때까지 대기
                 MatchForChangedIndices();
             }
@@ -267,6 +293,9 @@ namespace Match3.InGame.LevelSystems
             {
                 yield return C_SwapSuccessedAnimation(x1, y1, x2, y2);
 
+                _comboStack = 0;
+                _destroyCount = 0;
+
                 // 얘네들 파괴하니까 건들지 말라고 마킹함
                 for (int i = 0; i < _matchResults.Count; i++)
                 {
@@ -281,6 +310,7 @@ namespace Match3.InGame.LevelSystems
                     _nodes[y, x].IsScheduledForDestroy = true;
                     _nodes[y, x].Block = null;
                     _nodes[y, x].TypeFlags = NodeTypes.Nothing;
+                    _destroyCount++;
                 }
 
                 _changedIndices.Clear();
@@ -326,12 +356,17 @@ namespace Match3.InGame.LevelSystems
                     }
                 }
 
+                yield return new WaitUntil(() => _animationCount == 0);
+                Score += CalcScore();
+                
 
                 // 변경된 인덱스가 남지 않을 때까지 매치 반복
                 while (_changedIndices.Count > 0)
-                { 
-                yield return new WaitUntil(() => _animationCount == 0); // 애니메이션 코루틴 모두 종료될 때까지 대기
-                MatchForChangedIndices();
+                {
+                    _comboStack++;
+                    MatchForChangedIndices();
+                    yield return new WaitUntil(() => _animationCount == 0); // 애니메이션 코루틴 모두 종료될 때까지 대기
+                    Score += CalcScore();
                 }
             }
             // 스왑불가능하면 스왑 실패를 알리는 애니메이션 진행
@@ -346,8 +381,15 @@ namespace Match3.InGame.LevelSystems
             }
         }
 
+        int CalcScore()
+        {
+            return Mathf.RoundToInt(_destroyCount * Mathf.Pow(POWER_PER_COMBO_STACK, _comboStack) * SCORE_PER_BLOCK);
+        }
+
         void MatchForAllIndices()
         {
+            _destroyCount = 0;
+
             _matchResults.Clear();
             _changedIndices.Clear();
 
@@ -371,6 +413,7 @@ namespace Match3.InGame.LevelSystems
                             _nodes[y, x].IsScheduledForDestroy = true;
                             _nodes[y, x].Block = null;
                             _nodes[y, x].TypeFlags = NodeTypes.Nothing;
+                            _destroyCount++;
                         }
                     }
                 }
@@ -419,6 +462,8 @@ namespace Match3.InGame.LevelSystems
 
         void MatchForChangedIndices()
         {
+            _destroyCount = 0;
+
             // 복사본 만든 이유는 foreach 구문은 읽기전용이기 때문에, 순회하는 원본객체의 데이터가
             // 순회 도중 버전이 올라가면 (변경 사항이 생기면) 예외처리되므로 복사본을 사용하여 순회한다.
             List<(int x, int y)> changedIndicesCopy = new List<(int x, int y)>(_changedIndices);
@@ -443,6 +488,7 @@ namespace Match3.InGame.LevelSystems
                         _nodes[y, x].IsScheduledForDestroy = true;
                         _nodes[y, x].Block = null;
                         _nodes[y, x].TypeFlags = NodeTypes.Nothing;
+                        _destroyCount++;
                     }
                 }
             }
