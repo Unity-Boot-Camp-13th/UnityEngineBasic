@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DP.Models
 {
@@ -12,7 +11,7 @@ namespace DP.Models
             Slots = new List<InventorySlot>(slotNum);
 
             for (int i = 0; i < slotNum; i++)
-                Slots[i] = InventorySlot.Empty;
+                Slots.Add(InventorySlot.Empty);
         }
 
         public List<InventorySlot> Slots;

@@ -7,6 +7,26 @@ namespace DP.Repositories
     public class InventoryRepository
     {
         /// <summary>
+        /// 프로그램 시작부터 끝까지 인스턴스를 딱 한 개만 사용할 때, 혹은 주로 쓰는 한 개에 대한 참조만 필요할 때
+        /// 정적 멤버로 참조할 수 있기 초기화해 놓는 패턴
+        /// </summary>
+        public static InventoryRepository Singleton
+        {
+            get
+            {
+                // 인스턴스 없으면 만들어서라도 준다
+                if (_singleton == null)
+                {
+                    _singleton = new InventoryRepository(new InventoryContext());
+                }
+
+                return _singleton;
+            }
+        }
+
+        private static InventoryRepository _singleton;
+
+        /// <summary>
         /// 생성자를 통해 컨텍스트 의존성 주입
         /// </summary>
         public InventoryRepository(InventoryContext context)
@@ -46,7 +66,7 @@ namespace DP.Repositories
             if (slotIndex < 0)
                 throw new System.Exception("빈 슬롯이 없는데 추가 함수 호출됨");
 
-            _context.Inventory.Slots[slotIndex] += itemNum;
+            _context.Inventory.Slots[slotIndex] += (itemId, itemNum);
         }
 
         public void RemoveItem(int itemId, int itemNum)
@@ -59,7 +79,7 @@ namespace DP.Repositories
             if (_context.Inventory.Slots[slotIndex].ItemNum < itemNum)
                 throw new System.Exception("가지고 있는 것보다 더 많이 지우려고 함");
 
-            _context.Inventory.Slots[slotIndex] -= itemNum;
+            _context.Inventory.Slots[slotIndex] -= (itemId, itemNum);
         }
 
         public void Save()

@@ -22,26 +22,38 @@ namespace DP.Models
         public int ItemNum;
 
 
-        public static InventorySlot operator +(InventorySlot slot, int num)
+        public static InventorySlot operator +(InventorySlot slot, (int itemId, int itemNum) pair)
         {
-            if (slot.ItemId <= 0)
-                throw new Exception("아이템이 없는데 개수를 늘릴 수 없음");
+            // 빈 슬롯이면 새로 만듦
+            if (slot == Empty)
+            {
+                return new InventorySlot(pair.itemId, pair.itemNum);
+            }
+            else
+            {
+                // 다른 아이템 종류 추가하면 예외
+                if (slot.ItemId != pair.itemId)
+                    throw new Exception("다른 아이템 종류를 더하려고 시도함");
 
-            return new InventorySlot(slot.ItemId, slot.ItemNum + num);
+                return new InventorySlot(slot.ItemId, slot.ItemNum + pair.itemNum); // 아이템 개수 증가
+            }
         }
 
-        public static InventorySlot operator -(InventorySlot slot, int num)
+        public static InventorySlot operator -(InventorySlot slot, (int itemId, int itemNum) pair)
         {
+            if (slot.ItemId != pair.itemId)
+                throw new Exception("다른 아이템 종류를 더하려고 시도함");
+
             if (slot.ItemId <= 0)
                 throw new Exception("아이템이 없는데 개수를 뺄 수는 없음");
 
-            if (slot.ItemNum - num < 0)
+            if (slot.ItemNum - pair.itemNum < 0)
                 throw new Exception("슬롯 데이터는 개수를 음수로 가질 수 없음");
 
-            if (slot.ItemId - num == 0)
+            if (slot.ItemId - pair.itemNum == 0)
                 return InventorySlot.Empty;
 
-            return new InventorySlot(slot.ItemId, slot.ItemNum - num);
+            return new InventorySlot(slot.ItemId, slot.ItemNum - pair.itemNum);
         }
 
 

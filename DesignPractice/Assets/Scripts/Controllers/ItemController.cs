@@ -12,12 +12,13 @@ namespace DP.Controllers
 
         private void Start()
         {
-            _inventoryRepository = new InventoryRepository(new InventoryContext());
+            _inventoryRepository = InventoryRepository.Singleton;
         }
 
         public void PickUp()
         {
             _inventoryRepository.AddItem(_itemId, _itemNum);
+            _inventoryRepository.Save();
         }
     }
 }

@@ -21,7 +21,7 @@ public class Test_ItemPicker : MonoBehaviour
             {
                 if (hit.collider.gameObject.TryGetComponent(out ItemController itemController))
                 {
-                    itemController.PickUp();
+                    itemController.PickUp();  // 여기서 인벤토리로 이동
                 }
             }
         }
