@@ -4,14 +4,15 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace DP.Contexts
 {
+    /// <summary>
+    /// 인벤토리 데이터를 로드 / 세이브
+    /// </summary>
     public class InventoryContext
     {
-        /// <summary>
-        /// 인벤토리 데이터를 로드 / 세이브
-        /// </summary>
         public InventoryContext()
         {
             PATH = Application.persistentDataPath + "/Inventory.json";
@@ -22,6 +23,10 @@ namespace DP.Contexts
 
         const int DEFAULT_SLOT_SIZE = 32;
         readonly string PATH;
+
+
+        public event Action<IEnumerable<InventorySlot>> OnInventoryChanged;
+
 
         public void Load()
         {
@@ -42,6 +47,7 @@ namespace DP.Contexts
         {
             string json = JsonConvert.SerializeObject(Inventory);
             File.WriteAllText(PATH, json);
+            OnInventoryChanged?.Invoke(Inventory.Slots); // 모든 슬롯 데이터 구독자에게 통지
         }
     }
 }

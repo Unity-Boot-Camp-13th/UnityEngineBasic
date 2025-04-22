@@ -1,3 +1,4 @@
+using System;
 using DP.Contexts;
 using DP.Models;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ namespace DP.Repositories
     public class InventoryRepository
     {
         /// <summary>
-        /// 프로그램 시작부터 끝까지 인스턴스를 딱 한 개만 사용할 때, 혹은 주로 쓰는 한 개에 대한 참조만 필요할 때
+        /// 싱글톤 : 프로그램 시작부터 끝까지 인스턴스를 딱 한 개만 사용할 때, 혹은 주로 쓰는 한 개에 대한 참조만 필요할 때
         /// 정적 멤버로 참조할 수 있기 초기화해 놓는 패턴
         /// </summary>
         public static InventoryRepository Singleton
@@ -32,9 +33,14 @@ namespace DP.Repositories
         public InventoryRepository(InventoryContext context)
         {
             _context = context;
+            _context.OnInventoryChanged += slots =>
+            {
+                OnInventoryChanged?.Invoke(slots);
+            };
         }
 
         InventoryContext _context;
+        public event Action<IEnumerable<InventorySlot>> OnInventoryChanged;
 
         /// <summary>
         /// 인벤토리의 모든 슬롯데이터 읽기

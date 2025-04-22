@@ -1,6 +1,7 @@
 using DP.Repositories;
 using DP.Contexts;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace DP.Controllers
 {
@@ -20,8 +21,5 @@ namespace DP.Controllers
             _inventoryRepository.AddItem(_itemId, _itemNum);
             _inventoryRepository.Save();
         }
-
-
-        
     }
 }
