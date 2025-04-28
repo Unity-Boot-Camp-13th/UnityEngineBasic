@@ -14,7 +14,7 @@ public class Monster : Unit
 {
     // 유니티 인스펙터에 해당 필드 값에 대한 범위 설정
     [Range(1, 5)] public float speed;
-    GameObject Player;
+    public GameObject Player;
 
     // 몬스터 클래스에서 상황에 맞게 애니메이션을 실행시키려 합니다.
     // 이 때 필요한 데이터는 무엇일까요?
@@ -45,8 +45,9 @@ public class Monster : Unit
 
             // 탈출했다가 돌아옵니다.
             yield return null;
-            isSpawn = true;
         }
+        yield return new WaitForSeconds(0.5f);
+        isSpawn = true;
     }
 
 
@@ -68,14 +69,14 @@ public class Monster : Unit
         HP -= dmg; // 유닛의 체력을 데미지만큼 깎는다.
         if (HP <= 0)
         {
-            // GameObject eff = Resources.Load<GameObject>(effect.name);
+            var eff = Resources.Load<GameObject>(effectPrefab.name);
             // 등록한 이펙트의 이름으로 로드한다.
             Instantiate(effectPrefab, transform.position, Quaternion.identity);
             // 로드한 값을 생성한다.
 
             // 이펙트를 몬스터의 좌표 위치로 생성
-            GameObject effect = Manager.Pool.Pooling("Effect01")
-                .get(value => value.transform.position = transform.position);
+            // GameObject effect = Manager.Pool.Pooling("Effect01")
+            //     .get(value => value.transform.position = transform.position);
         }
     }
 
@@ -86,7 +87,8 @@ public class Monster : Unit
     private void Update()
     {
         transform.LookAt(Player.transform.position);
-
+        // transform.LookAt(Vector3.zero);
+        
         if (isSpawn == false)
             return;
 

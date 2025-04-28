@@ -297,8 +297,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d6bda0c33a85e4abf2e0808536ef5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
+  ATK: 0
+  ATK_SPEED: 0
+  A_RANGE: 0
+  T_RANGE: 0
   speed: 1
-  player: {fileID: 0}
+  Player: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a, type: 3}
+  effectPrefab: {fileID: 0}
 --- !u!1 &5766980710999772011
 GameObject:
   m_ObjectHideFlags: 0

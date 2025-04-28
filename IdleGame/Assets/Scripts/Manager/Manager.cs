@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 // 프로젝트 내의 매니저를 관리하는 매니저 (Brain)
 public class Manager : MonoBehaviour
@@ -25,6 +26,10 @@ public class Manager : MonoBehaviour
             // 게임 오브젝트를 DontDestroyOnLoad 로 넘겨줍니다.
             // 이 씬에 있는 오브젝트는 씬을 로드해도 파괴되지 않고
             // 그대로 전달됩니다.
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
     #endregion

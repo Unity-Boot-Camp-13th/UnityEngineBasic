@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 5611438464081690114}
   - component: {fileID: 3554779560161513341}
   m_Layer: 0
-  m_Name: Slime
+  m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,6 +303,7 @@ MonoBehaviour:
   A_RANGE: 0
   T_RANGE: 0
   speed: 1
+  Player: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a, type: 3}
   effectPrefab: {fileID: 8764043878647920493, guid: 642edfab94188c2498f47c3206c4990c,
     type: 3}
 --- !u!1 &5766980710999772011

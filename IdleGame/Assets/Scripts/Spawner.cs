@@ -17,14 +17,14 @@ public class Spawner : MonoBehaviour
     // public GameObject[] monster_prefab; // 몬스터 프리팹
     // public GameObject player;
 
-    public static List<Monster> monster_list = new List<Monster>();
-    public static List<Player> player_list = new List<Player>();
+    // public static List<Monster> monster_list = new List<Monster>();
+    // public static List<Player> player_list = new List<Player>();
     // 방치형 게임에서 캐릭터를 여러 개 사용하는 경우가 존재하기 때문
 
 
     private void Start()
     {
-        // StartCoroutine(CSpawn());
+        StartCoroutine(CSpawn());
         // StartCoroutine(함수명());
     }
 
@@ -38,7 +38,7 @@ public class Spawner : MonoBehaviour
         // 2. 몇 번 생성할 것인가?
         for (int i = 0; i < count; i++)
         {
-            int index = Random.Range(0, monster_list.Count); // 랜덤 선택
+            // int index = Random.Range(0, monster_list.Count); // 랜덤 선택
             // 3. 어떤 형태로 생성할 것인가?
             // pos = player.transform.position + Random.insideUnitSphere * 10.0f;
             pos = Random.insideUnitSphere * 10.0f;
@@ -55,7 +55,20 @@ public class Spawner : MonoBehaviour
                 pos.y = 0.0f;
             }
 
-            Instantiate(monster_list[index], pos, Quaternion.identity);
+            // Instantiate(monster_list[index], pos, Quaternion.identity);  
+
+            // Action 대리자를 활용해 몬스터 풀링
+            // var go = Manager.Pool.Pooling("Monster").get();
+
+            var go = Manager.Pool.Pooling("Monster").get((value) =>
+            {
+                value.GetComponent<Monster>().MonsterInit();
+                value.transform.position = pos;
+                value.transform.LookAt(Vector3.zero);
+            });
+
+            // 반납
+            StartCoroutine(CRelease(go));
         }
         yield return new WaitForSeconds(spawnTime);
         StartCoroutine(CSpawn());
