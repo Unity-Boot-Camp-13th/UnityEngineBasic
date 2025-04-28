@@ -1,72 +1,88 @@
 using System.Collections;
 using UnityEngine;
 
-// ÄÄÆ÷³ÍÆ® (Component)
-// À¯´ÏÆ¼ ¿ÀºêÁ§Æ®°¡ »ç¿ëÇÒ ±â´É
-// Á¦°øµÇ´Â ÄÄÆ÷³ÍÆ®°¡ ÀÖ°í, ½ºÅ©¸³Æ®ÀÇ °æ¿ì´Â »ç¿ëÀÚ°¡ ¸¸µé¾îÁÖ´Â »ç¿ëÀÚ Á¤ÀÇ
-// ÄÄÆ÷³ÍÆ®·Î½á È°¿ëÀÌ °¡´ÉÇÕ´Ï´Ù. (Mono »ó¼Ó)
+// ì»´í¬ë„ŒíŠ¸ (Component)
+// ìœ ë‹ˆí‹° ì˜¤ë¸Œì íŠ¸ê°€ ì‚¬ìš©í•  ê¸°ëŠ¥
+// ì œê³µë˜ëŠ” ì»´í¬ë„ŒíŠ¸ê°€ ìˆê³ , ìŠ¤í¬ë¦½íŠ¸ì˜ ê²½ìš°ëŠ” ì‚¬ìš©ìê°€ ë§Œë“¤ì–´ì£¼ëŠ” ì‚¬ìš©ì ì •ì˜
+// ì»´í¬ë„ŒíŠ¸ë¡œì¨ í™œìš©ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤. (Mono ìƒì†)
 
-// MonoBehaviour »ó¼Ó
-// 1. À¯´ÏÆ¼ ¿ÀºêÁ§Æ®¿¡ ÇØ´ç Å¬·¡½º¸¦ ÄÄÆ÷³ÍÆ®·Î½á µî·ÏÇÒ ¼ö ÀÖ½À´Ï´Ù.
+// MonoBehaviour ìƒì†
+// 1. ìœ ë‹ˆí‹° ì˜¤ë¸Œì íŠ¸ì— í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ì»´í¬ë„ŒíŠ¸ë¡œì¨ ë“±ë¡í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 
 
-public class Monster : MonoBehaviour
+public class Monster : Unit
 {
-    // À¯´ÏÆ¼ ÀÎ½ºÆåÅÍ¿¡ ÇØ´ç ÇÊµå °ª¿¡ ´ëÇÑ ¹üÀ§ ¼³Á¤
+    // ìœ ë‹ˆí‹° ì¸ìŠ¤í™í„°ì— í•´ë‹¹ í•„ë“œ ê°’ì— ëŒ€í•œ ë²”ìœ„ ì„¤ì •
     [Range(1, 5)] public float speed;
     GameObject Player;
 
-    Animator animator;
-
-    // ¸ó½ºÅÍ Å¬·¡½º¿¡¼­ »óÈ²¿¡ ¸Â°Ô ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ½ÇÇà½ÃÅ°·Á ÇÕ´Ï´Ù.
-    // ÀÌ ¶§ ÇÊ¿äÇÑ µ¥ÀÌÅÍ´Â ¹«¾ùÀÏ±î¿ä?
+    // ëª¬ìŠ¤í„° í´ë˜ìŠ¤ì—ì„œ ìƒí™©ì— ë§ê²Œ ì• ë‹ˆë©”ì´ì…˜ì„ ì‹¤í–‰ì‹œí‚¤ë ¤ í•©ë‹ˆë‹¤.
+    // ì´ ë•Œ í•„ìš”í•œ ë°ì´í„°ëŠ” ë¬´ì—‡ì¼ê¹Œìš”?
     // 1. Animation
     // 2. Animator
 
     bool isSpawn = false;
 
-    // ¸ó½ºÅÍ°¡ »ı¼ºµÆÀ» ¶§ ÁøÇàÇÒ ÀÛ¾÷ (¿¬Ãâ)
-    // ¼­¼­È÷ Ä¿Áö´Â ´À³¦
+    // ëª¬ìŠ¤í„°ê°€ ìƒì„±ëì„ ë•Œ ì§„í–‰í•  ì‘ì—… (ì—°ì¶œ)
+    // ì„œì„œíˆ ì»¤ì§€ëŠ” ëŠë‚Œ
     IEnumerator OnSpawn()
     {
-        float current = 0f; // ÇÁ·¹ÀÓ °ª ÀúÀå¿ë
-        float percent = 0f; // ¹İº¹¹®ÀÇ Á¶°Ç¿ë, ÃÖ´ë 1
-        float start = 0f; // º¯È­ ½ÃÀÛ °ª
-        float end = transform.localScale.x; // º¯È­ ¸¶Áö¸· °ª
-        // localScale Àº °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ »ó´ëÀûÀÎ Å©±â¸¦ ÀÇ¹ÌÇÕ´Ï´Ù.
-        // ÇöÀç´Â ¿ÀºêÁ§Æ®ÀÇ Å©±â·Î ±â¾ïÇÕ´Ï´Ù.
+        float current = 0f; // í”„ë ˆì„ ê°’ ì €ì¥ìš©
+        float percent = 0f; // ë°˜ë³µë¬¸ì˜ ì¡°ê±´ìš©, ìµœëŒ€ 1
+        float start = 0f; // ë³€í™” ì‹œì‘ ê°’
+        float end = transform.localScale.x; // ë³€í™” ë§ˆì§€ë§‰ ê°’
+        // localScale ì€ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìƒëŒ€ì ì¸ í¬ê¸°ë¥¼ ì˜ë¯¸í•©ë‹ˆë‹¤.
+        // í˜„ì¬ëŠ” ì˜¤ë¸Œì íŠ¸ì˜ í¬ê¸°ë¡œ ê¸°ì–µí•©ë‹ˆë‹¤.
 
         while (percent < 1f)
         {
             current += Time.deltaTime;
             percent = current / end;
 
-            // start ¿¡¼­ end ÁöÁ¡±îÁö percent °£°İÀ¸·Î ÀÌµ¿ÇØ¶ó
+            // start ì—ì„œ end ì§€ì ê¹Œì§€ percent ê°„ê²©ìœ¼ë¡œ ì´ë™í•´ë¼
             var pos = Mathf.Lerp(start, end, percent);
             transform.localScale = new Vector3(pos, pos, pos);
 
-            // Å»ÃâÇß´Ù°¡ µ¹¾Æ¿É´Ï´Ù.
+            // íƒˆì¶œí–ˆë‹¤ê°€ ëŒì•„ì˜µë‹ˆë‹¤.
             yield return null;
             isSpawn = true;
         }
     }
 
 
-    private void Start()
+    protected override void Start()
     {
-        animator = GetComponent<Animator>();
-        // ÄÚµå ³»¿¡¼­ Animator ·Î ÀÎ½ÄÇÏ°í, AnimatorÀÇ ÇÊµå³ª ¸Ş¼Òµå¸¦
-        // »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if (playerObj != null)
-        {
-            Player = playerObj;
-        }
-        StartCoroutine(OnSpawn());
+        base.Start(); // Unit ì˜ Start í˜¸ì¶œ
+        // Monster ê°€ ì‹¤í–‰í•  Start ì‘ì—… êµ¬í˜„
+        // MonsterInit();
+
+        // ê¸°ë³¸ ì²´ë ¥ì€ 5ë¡œ ì„¤ì •í•œë‹¤.
+        HP = 5.0f;
+        GetDamage(5.0f);
     }
 
+    public GameObject effectPrefab; // ì´í™íŠ¸ ì—°ê²°
 
-    // À¯´ÏÆ¼ ¶óÀÌÇÁ ½ÎÀÌÅ¬ ÇÔ¼ö
+    public void GetDamage(double dmg)
+    {
+        HP -= dmg; // ìœ ë‹›ì˜ ì²´ë ¥ì„ ë°ë¯¸ì§€ë§Œí¼ ê¹ëŠ”ë‹¤.
+        if (HP <= 0)
+        {
+            // GameObject eff = Resources.Load<GameObject>(effect.name);
+            // ë“±ë¡í•œ ì´í™íŠ¸ì˜ ì´ë¦„ìœ¼ë¡œ ë¡œë“œí•œë‹¤.
+            Instantiate(effectPrefab, transform.position, Quaternion.identity);
+            // ë¡œë“œí•œ ê°’ì„ ìƒì„±í•œë‹¤.
+
+            // ì´í™íŠ¸ë¥¼ ëª¬ìŠ¤í„°ì˜ ì¢Œí‘œ ìœ„ì¹˜ë¡œ ìƒì„±
+            GameObject effect = Manager.Pool.Pooling("Effect01")
+                .get(value => value.transform.position = transform.position);
+        }
+    }
+
+    public void MonsterInit() => StartCoroutine(OnSpawn());
+
+
+    // ìœ ë‹ˆí‹° ë¼ì´í”„ ì‹¸ì´í´ í•¨ìˆ˜
     private void Update()
     {
         transform.LookAt(Player.transform.position);
@@ -76,28 +92,28 @@ public class Monster : MonoBehaviour
 
         var distance = Vector3.Distance(transform.position, Player.transform.position);
 
-        // ¼³Á¤ÇÑ ±âÁØº¸´Ù ÃøÁ¤ °Å¸®°¡ ÀÛÀ¸¸é
+        // ì„¤ì •í•œ ê¸°ì¤€ë³´ë‹¤ ì¸¡ì • ê±°ë¦¬ê°€ ì‘ìœ¼ë©´
         if (distance <= 0.5f)
         {
-            SetAnimator("isIDLE"); // ´ë±â¸ğµå·Î º¯°æÇÕ´Ï´Ù.
+            SetAnimator("isIDLE"); // ëŒ€ê¸°ëª¨ë“œë¡œ ë³€ê²½í•©ë‹ˆë‹¤.
         }
         else
         {
             transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, Time.deltaTime * speed);
-            SetAnimator("isMOVE"); // ÀÌµ¿¸ğµå·Î º¯°æÇÕ´Ï´Ù.
+            SetAnimator("isMOVE"); // ì´ë™ëª¨ë“œë¡œ ë³€ê²½í•©ë‹ˆë‹¤.
 
         }
-        #region ÇÊ±â
-        // 1. transform.position : ÇöÀç ¿ÀºêÁ§Æ®ÀÇ À§Ä¡¸¦ ³ªÅ¸³À´Ï´Ù.
-        // 2. Vector3 : 3D È¯°æÀÇ ÁÂÇ¥°è (X,Y,Z Ãà) ±¸¼º
-        // 3. MoveTowards(start, end, speed) : start ºÎÅÍ end ÁöÁ¡±îÁö speed ¼öÄ¡¸¸Å­ ÀÌµ¿ÇÕ´Ï´Ù.
-        // 4. Time.deltaTime : ÀÌÀü ÇÁ·¹ÀÓÀÌ ¿Ï·áµÇ±â±îÁö °É¸° ½Ã°£
-        //                     (ÄÄÇ»ÅÍÀÇ ¼º´ÉÀÌ ´À¸±¼ö·Ï °ªÀÌ Ä¿Áü)
-        //                     ÀÏ¹İÀûÀ¸·Î ¾à 1ÃÊ
-        //                     ¾÷µ¥ÀÌÆ®¿¡¼­ ÀÛ¾÷À» ÇÏ´Âµ¥ ÀÖ¾î¼­ÀÇ º¸Á¤ °ª ¿ªÇÒ
-        // 5. transform.LookAt(Vector3 position) : Æ¯Á¤ ¹æÇâÀ» ¹Ù¶óº¸°Ô ¼³Á¤ÇØÁÖ´Â ±â´É
+        #region í•„ê¸°
+        // 1. transform.position : í˜„ì¬ ì˜¤ë¸Œì íŠ¸ì˜ ìœ„ì¹˜ë¥¼ ë‚˜íƒ€ëƒ…ë‹ˆë‹¤.
+        // 2. Vector3 : 3D í™˜ê²½ì˜ ì¢Œí‘œê³„ (X,Y,Z ì¶•) êµ¬ì„±
+        // 3. MoveTowards(start, end, speed) : start ë¶€í„° end ì§€ì ê¹Œì§€ speed ìˆ˜ì¹˜ë§Œí¼ ì´ë™í•©ë‹ˆë‹¤.
+        // 4. Time.deltaTime : ì´ì „ í”„ë ˆì„ì´ ì™„ë£Œë˜ê¸°ê¹Œì§€ ê±¸ë¦° ì‹œê°„
+        //                     (ì»´í“¨í„°ì˜ ì„±ëŠ¥ì´ ëŠë¦´ìˆ˜ë¡ ê°’ì´ ì»¤ì§)
+        //                     ì¼ë°˜ì ìœ¼ë¡œ ì•½ 1ì´ˆ
+        //                     ì—…ë°ì´íŠ¸ì—ì„œ ì‘ì—…ì„ í•˜ëŠ”ë° ìˆì–´ì„œì˜ ë³´ì • ê°’ ì—­í• 
+        // 5. transform.LookAt(Vector3 position) : íŠ¹ì • ë°©í–¥ì„ ë°”ë¼ë³´ê²Œ ì„¤ì •í•´ì£¼ëŠ” ê¸°ëŠ¥
 
-        // ¹æÇâ º¤ÅÍ : ±âº»ÀûÀ¸·Î Á¦°øÇØÁÖ´Â Vector °ª
+        // ë°©í–¥ ë²¡í„° : ê¸°ë³¸ì ìœ¼ë¡œ ì œê³µí•´ì£¼ëŠ” Vector ê°’
         // Vector3.right   == new Vector3(1,0,0);
         // Vector3.left    == new Vector3(-1,0,0);
         // Vector3.up      == new Vector3(0,1,0);
@@ -107,16 +123,5 @@ public class Monster : MonoBehaviour
         // Vector3.zero    == new Vector3(0,0,0);
         // Vector3.one     == new Vector3(1,1,1); 
         #endregion
-    }
-
-    private void SetAnimator(string temp)
-    {
-        // ±âº» ÆÄ¶ó¹ÌÅÍ¿¡ ´ëÇÑ ÃÊ±âÈ­
-        // À¯´ÏÆ¼ Animator ¿¡ ¸¸µé¾î µĞ parameter ÀÇ ÀÌ¸§À» Á¤È®ÇÏ°Ô ±âÀçÇÕ´Ï´Ù.
-        animator.SetBool("isIDLE", false);
-        animator.SetBool("isMove", false);
-
-        // ÀÎÀÚ·Î Àü´Ş¹ŞÀº °ªÀ» true ·Î ¼³Á¤
-        animator.SetBool(temp, true);
     }
 }

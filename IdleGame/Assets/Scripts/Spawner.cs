@@ -1,60 +1,71 @@
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Spawner : MonoBehaviour
 {
-    // 1. ¸ó½ºÅÍÀÇ »ı¼ºÀº ÇÁ·¹ÀÓ ´ç »ı¼ºº¸´Ù´Â ÃÊ °£°İÀ¸·Î »ı¼ºµÇ´Â °æ¿ì°¡ ¸¹´Ù. (Á¨ Å¸ÀÓ)
+    // 1. ëª¬ìŠ¤í„°ì˜ ìƒì„±ì€ í”„ë ˆì„ ë‹¹ ìƒì„±ë³´ë‹¤ëŠ” ì´ˆ ê°„ê²©ìœ¼ë¡œ ìƒì„±ë˜ëŠ” ê²½ìš°ê°€ ë§ë‹¤. (ì   íƒ€ì„)
 
-    // ÀÌ ÀÛ¾÷À» À¯´ÏÆ¼¿¡¼­´Â ÄÚ·çÆ¾ÀÌ¶ó´Â ±â¹ıÀ¸·Î ¼³°èÇÕ´Ï´Ù.
+    // ì´ ì‘ì—…ì„ ìœ ë‹ˆí‹°ì—ì„œëŠ” ì½”ë£¨í‹´ì´ë¼ëŠ” ê¸°ë²•ìœ¼ë¡œ ì„¤ê³„í•©ë‹ˆë‹¤.
 
-    // ÄÚ·çÆ¾ÀÌ ÀÚÁÖ »ç¿ëµÇ´Â °æ¿ì
-    // 1. ¸ó½ºÅÍ »ı¼º
-    // 2. ¹°¾à, ½ºÅ³ ÄğÅ¸ÀÓ
+    // ì½”ë£¨í‹´ì´ ìì£¼ ì‚¬ìš©ë˜ëŠ” ê²½ìš°
+    // 1. ëª¬ìŠ¤í„° ìƒì„±
+    // 2. ë¬¼ì•½, ìŠ¤í‚¬ ì¿¨íƒ€ì„
 
-    public int count;       // »ı¼ºµÉ ¸ó½ºÅÍÀÇ °³¼ö
-    public float spawnTime; // »ı¼º ÁÖ±â (Á¨ Å¸ÀÓ, ½ºÆù Å¸ÀÓ..)
-    public GameObject[] monster_prefab;
+    public int count;       // ìƒì„±ë  ëª¬ìŠ¤í„°ì˜ ê°œìˆ˜
+    public float spawnTime; // ìƒì„± ì£¼ê¸° (ì   íƒ€ì„, ìŠ¤í° íƒ€ì„..)
+    // public GameObject[] monster_prefab; // ëª¬ìŠ¤í„° í”„ë¦¬íŒ¹
     public GameObject player;
+
+    public static List<Monster> monster_list = new List<Monster>();
+    // public static List<Player> player_list = new List<Player>();
+    // ë°©ì¹˜í˜• ê²Œì„ì—ì„œ ìºë¦­í„°ë¥¼ ì—¬ëŸ¬ ê°œ ì‚¬ìš©í•˜ëŠ” ê²½ìš°ê°€ ì¡´ì¬í•˜ê¸° ë•Œë¬¸
 
 
     private void Start()
     {
         StartCoroutine(CSpawn());
-        // StartCoroutine(ÇÔ¼ö¸í());
+        // StartCoroutine(í•¨ìˆ˜ëª…());
     }
 
 
     IEnumerator CSpawn()
     {
-        // 1. ¾îµğ¿¡ »ı¼ºÇÒ °ÍÀÎ°¡?
+        // 1. ì–´ë””ì— ìƒì„±í•  ê²ƒì¸ê°€?
         Vector3 pos;
         
 
-        // 2. ¸î ¹ø »ı¼ºÇÒ °ÍÀÎ°¡?
+        // 2. ëª‡ ë²ˆ ìƒì„±í•  ê²ƒì¸ê°€?
         for (int i = 0; i < count; i++)
         {
-            int index = Random.Range(0, monster_prefab.Length); // ·£´ı ¼±ÅÃ
-            // 3. ¾î¶² ÇüÅÂ·Î »ı¼ºÇÒ °ÍÀÎ°¡?
+            int index = Random.Range(0, monster_list.Count); // ëœë¤ ì„ íƒ
+            // 3. ì–´ë–¤ í˜•íƒœë¡œ ìƒì„±í•  ê²ƒì¸ê°€?
             pos = player.transform.position + Random.insideUnitSphere * 10.0f;
-            // »ı¼º ³ôÀÌ ÅëÀÏ (y ÁÂÇ¥ = 0)
+            // ìƒì„± ë†’ì´ í†µì¼ (y ì¢Œí‘œ = 0)
             pos.y = 0.0f;
-            // Quaternion.idetity : È¸Àü °ª 0
-            // ±âÁ¸ ÇüÅÂ¸¦ ±×´ë·Î »ı¼ºÇÏ´Â °æ¿ì¿¡ »ç¿ëÇÏ´Â °ª
+            // Quaternion.idetity : íšŒì „ ê°’ 0
+            // ê¸°ì¡´ í˜•íƒœë¥¼ ê·¸ëŒ€ë¡œ ìƒì„±í•˜ëŠ” ê²½ìš°ì— ì‚¬ìš©í•˜ëŠ” ê°’
 
-            // »ı¼ºµÈ °Å¸®¸¦ ±âÁØÀ¸·Î Àç»ı¼º À¯µµ
+            // ìƒì„±ëœ ê±°ë¦¬ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¬ìƒì„± ìœ ë„
             while (Vector3.Distance(pos, Vector3.zero) <= 3.0f)
             {
                 pos = player.transform.position + Random.insideUnitSphere * 10.0f;
                 pos.y = 0.0f;
             }
 
-            Instantiate(monster_prefab[index], pos, Quaternion.identity);
+            Instantiate(monster_list[index], pos, Quaternion.identity);
         }
         yield return new WaitForSeconds(spawnTime);
         StartCoroutine(CSpawn());
-        // yield return : ÀÏÁ¤ ½ÃÁ¡ ÈÄ ´Ù½Ã µ¹¾Æ¿À´Â ÄÚµå
-        // WaitForSeconds(float t) : ÀÛ¼ºÇÑ °ª¸¸Å­ ´ë±âÇÕ´Ï´Ù. (ÃÊ ´ÜÀ§)
+        // yield return : ì¼ì • ì‹œì  í›„ ë‹¤ì‹œ ëŒì•„ì˜¤ëŠ” ì½”ë“œ
+        // WaitForSeconds(float t) : ì‘ì„±í•œ ê°’ë§Œí¼ ëŒ€ê¸°í•©ë‹ˆë‹¤. (ì´ˆ ë‹¨ìœ„)
+
+        IEnumerator CRelease(GameObject obj)
+        {
+            // 1ì´ˆ ëŒ€ê¸°
+            yield return new WaitForSeconds(1.0f);
+
+            Manager.Pool.pool_dict["Monster"].Release(obj);
+        }
     }
 }
