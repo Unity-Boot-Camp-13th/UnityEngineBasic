@@ -15,16 +15,16 @@ public class Spawner : MonoBehaviour
     public int count;       // 생성될 몬스터의 개수
     public float spawnTime; // 생성 주기 (젠 타임, 스폰 타임..)
     // public GameObject[] monster_prefab; // 몬스터 프리팹
-    public GameObject player;
+    // public GameObject player;
 
     public static List<Monster> monster_list = new List<Monster>();
-    // public static List<Player> player_list = new List<Player>();
+    public static List<Player> player_list = new List<Player>();
     // 방치형 게임에서 캐릭터를 여러 개 사용하는 경우가 존재하기 때문
 
 
     private void Start()
     {
-        StartCoroutine(CSpawn());
+        // StartCoroutine(CSpawn());
         // StartCoroutine(함수명());
     }
 
@@ -40,7 +40,8 @@ public class Spawner : MonoBehaviour
         {
             int index = Random.Range(0, monster_list.Count); // 랜덤 선택
             // 3. 어떤 형태로 생성할 것인가?
-            pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+            // pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+            pos = Random.insideUnitSphere * 10.0f;
             // 생성 높이 통일 (y 좌표 = 0)
             pos.y = 0.0f;
             // Quaternion.idetity : 회전 값 0
@@ -49,7 +50,8 @@ public class Spawner : MonoBehaviour
             // 생성된 거리를 기준으로 재생성 유도
             while (Vector3.Distance(pos, Vector3.zero) <= 3.0f)
             {
-                pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+                // pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+                pos = Random.insideUnitSphere * 10.0f;
                 pos.y = 0.0f;
             }
 
