@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
     public int count;       // 생성될 몬스터의 개수
     public float spawnTime; // 생성 주기 (젠 타임, 스폰 타임..)
     // public GameObject[] monster_prefab; // 몬스터 프리팹
-    public GameObject player;
+    GameObject player;
 
     // public static List<Monster> monster_list = new List<Monster>();
     // public static List<Player> player_list = new List<Player>();
@@ -24,6 +24,8 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
+       
+
         StartCoroutine(CSpawn());
         // StartCoroutine(함수명());
     }
@@ -31,6 +33,7 @@ public class Spawner : MonoBehaviour
 
     IEnumerator CSpawn()
     {
+        player = GameObject.FindWithTag("Player");
         // 1. 어디에 생성할 것인가?
         Vector3 pos;
         
@@ -40,18 +43,18 @@ public class Spawner : MonoBehaviour
         {
             // int index = Random.Range(0, monster_list.Count); // 랜덤 선택
             // 3. 어떤 형태로 생성할 것인가?
-            //pos = player.transform.position + Random.insideUnitSphere * 10.0f;
-            pos = Random.insideUnitSphere * 10.0f;
+            pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+            // pos = Random.insideUnitSphere * 10.0f;
             // 생성 높이 통일 (y 좌표 = 0)
             pos.y = 0.0f;
             // Quaternion.idetity : 회전 값 0
             // 기존 형태를 그대로 생성하는 경우에 사용하는 값
 
             // 생성된 거리를 기준으로 재생성 유도
-            while (Vector3.Distance(pos, Vector3.zero) <= 3.0f)
+            while (Vector3.Distance(pos, player.transform.position) <= 3.0f)
             {
-                // pos = player.transform.position + Random.insideUnitSphere * 10.0f;
-                pos = Random.insideUnitSphere * 10.0f;
+                pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+                // pos = Random.insideUnitSphere * 10.0f;
                 pos.y = 0.0f;
             }
 
@@ -62,18 +65,19 @@ public class Spawner : MonoBehaviour
 
             var go = Manager.Pool.Pooling("Monster").get((value) =>
             {
-                value.GetComponent<Monster>().MonsterInit();
                 value.transform.position = pos;
-                value.transform.LookAt(Vector3.zero);
+                value.transform.LookAt(player.transform.position);
+                value.GetComponent<Monster>().MonsterInit();
             });
 
             // 반납
-            StartCoroutine(CRelease(go));
+            // StartCoroutine(CRelease(go));
         }
-        yield return new WaitForSeconds(spawnTime);
-        StartCoroutine(CSpawn());
         // yield return : 일정 시점 후 다시 돌아오는 코드
         // WaitForSeconds(float t) : 작성한 값만큼 대기합니다. (초 단위)
+        yield return new WaitForSeconds(spawnTime);
+        StartCoroutine(CSpawn());
+        
 
         IEnumerator CRelease(GameObject obj)
         {
