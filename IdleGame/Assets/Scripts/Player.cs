@@ -16,12 +16,12 @@ public class Player : Unit
     // 메인 로직을 짜는 위치 (Update)
     private void Update()
     {
+        StrikeFirst(Spawner.monster_list.ToArray());
+        // 리스트 -> 배열
+
         // 타겟이 없다?
         if (target == null)
         {
-            StrikeFirst(Spawner.monster_list.ToArray());
-            // 리스트 -> 배열
-
             // 거리 계산
             var targetPos = Vector3.Distance(transform.position, pos);
 
@@ -48,6 +48,10 @@ public class Player : Unit
         {
             SetAnimator("isMOVE");
             transform.position = Vector3.MoveTowards(transform.position, target.position, Time.deltaTime);
+        }
+        else if (targetDistance <= A_RANGE)
+        {
+            SetAnimator("isAttack");
         }
     }
 }
