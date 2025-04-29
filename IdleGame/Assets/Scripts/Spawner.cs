@@ -17,15 +17,13 @@ public class Spawner : MonoBehaviour
     // public GameObject[] monster_prefab; // 몬스터 프리팹
     GameObject player;
 
-    // public static List<Monster> monster_list = new List<Monster>();
+    public static List<Monster> monster_list = new List<Monster>();
     // public static List<Player> player_list = new List<Player>();
     // 방치형 게임에서 캐릭터를 여러 개 사용하는 경우가 존재하기 때문
 
 
     private void Start()
     {
-       
-
         StartCoroutine(CSpawn());
         // StartCoroutine(함수명());
     }
@@ -68,6 +66,7 @@ public class Spawner : MonoBehaviour
                 value.transform.position = pos;
                 value.transform.LookAt(player.transform.position);
                 value.GetComponent<Monster>().MonsterInit();
+                monster_list.Add(value.GetComponent<Monster>());
             });
 
             // 반납

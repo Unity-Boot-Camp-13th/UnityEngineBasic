@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 
@@ -17,10 +18,16 @@ public class HitText : MonoBehaviour
 
     private void Update()
     {
+        // up 이 일정 기준 동안 계속 증가할 수 있게
+        if (up <= 0.5f)
+        {
+            up += Time.deltaTime;
+        }
+
         var pos = new Vector3(target.x, target.y + up, target.z);
         transform.position = Camera.main.WorldToScreenPoint(pos);
         // 메인 카메라 기준으로 스크린 위치로 설정합니다.
-    }
+    } 
 
     public void Init(Vector3 pos, double value)
     {
@@ -29,6 +36,9 @@ public class HitText : MonoBehaviour
 
         // 해당 cs 파일을 가진 UI 를 B_Canvas(기본 캔버스) 쪽에 연결
         transform.parent = B_Canvas.instance.transform;
+
+        // 일정 시간 뒤에 반납을 진행
+        Release();
     }
 
     // 피격 텍스트 반납 코드

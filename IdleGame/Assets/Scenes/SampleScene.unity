@@ -240,7 +240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   count: 5
   spawnTime: 10
-  player: {fileID: 931389674}
 --- !u!4 &31436107
 Transform:
   m_ObjectHideFlags: 0
@@ -371,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872f8358f5da6184f94919b5dfe48525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Coin: {fileID: 2060490553}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,12 +678,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &931389674 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1028998592}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1028998592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -695,6 +689,11 @@ PrefabInstance:
     - target: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a,
         type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a,
+        type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 9068140075932969720, guid: a037e900b8b3625478a089de0aae0f4a,

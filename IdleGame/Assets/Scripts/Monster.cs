@@ -78,6 +78,8 @@ public class Monster : Unit
             value.GetComponent<HitText>().Init(transform.position, dmg);
         });
 
+        
+
         HP -= dmg; // 유닛의 체력을 데미지만큼 깎는다.
 
         if (HP <= 0)
@@ -87,9 +89,18 @@ public class Monster : Unit
             // Instantiate(effectPrefab, transform.position, Quaternion.identity);
             // 로드한 값을 생성한다.
 
+            
             // 이펙트를 몬스터의 좌표 위치로 생성
-            GameObject effect = Manager.Pool.Pooling("Effect01")
-                .get(value => value.transform.position = transform.position);
+            Manager.Pool.Pooling(effectPrefab.name).get(value =>
+            {
+                value.transform.position = transform.position;
+            });
+
+            // 코인 드랍 기능 추가
+            Manager.Pool.Pooling("Coin_Move").get(value =>
+            {
+                value.GetComponent<CoinMove>().Init(transform.position);
+            });
         }
     }
 
