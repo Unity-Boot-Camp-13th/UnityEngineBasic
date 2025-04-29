@@ -26,6 +26,15 @@ public class HitText : MonoBehaviour
     {
         target = pos;
         message.text = value.ToString();
+
+        // 해당 cs 파일을 가진 UI 를 B_Canvas(기본 캔버스) 쪽에 연결
+        transform.parent = B_Canvas.instance.transform;
+    }
+
+    // 피격 텍스트 반납 코드
+    private void Release()
+    {
+        Manager.Pool.pool_dict["Hit"].Release(gameObject);
     }
 
     // 추가로 고민해볼 만한 것

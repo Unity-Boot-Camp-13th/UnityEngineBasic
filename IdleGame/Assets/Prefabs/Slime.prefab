@@ -304,7 +304,8 @@ MonoBehaviour:
   T_RANGE: 0
   speed: 1
   Player: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a, type: 3}
-  effectPrefab: {fileID: 0}
+  effectPrefab: {fileID: 8764043878647920493, guid: 642edfab94188c2498f47c3206c4990c,
+    type: 3}
 --- !u!1 &5766980710999772011
 GameObject:
   m_ObjectHideFlags: 0

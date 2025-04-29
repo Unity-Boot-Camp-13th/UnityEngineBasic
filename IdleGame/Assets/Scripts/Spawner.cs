@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
     public int count;       // 생성될 몬스터의 개수
     public float spawnTime; // 생성 주기 (젠 타임, 스폰 타임..)
     // public GameObject[] monster_prefab; // 몬스터 프리팹
-    // public GameObject player;
+    public GameObject player;
 
     // public static List<Monster> monster_list = new List<Monster>();
     // public static List<Player> player_list = new List<Player>();
@@ -40,7 +40,7 @@ public class Spawner : MonoBehaviour
         {
             // int index = Random.Range(0, monster_list.Count); // 랜덤 선택
             // 3. 어떤 형태로 생성할 것인가?
-            // pos = player.transform.position + Random.insideUnitSphere * 10.0f;
+            //pos = player.transform.position + Random.insideUnitSphere * 10.0f;
             pos = Random.insideUnitSphere * 10.0f;
             // 생성 높이 통일 (y 좌표 = 0)
             pos.y = 0.0f;

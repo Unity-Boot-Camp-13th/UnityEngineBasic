@@ -21,7 +21,8 @@ public class Monster : Unit
     // 1. Animation
     // 2. Animator
 
-    bool isSpawn = false;
+    bool isSpawn = false; // 생성 여부
+    bool isDead = false; // 살았는지 죽었는지의 여부
 
     // 몬스터가 생성됐을 때 진행할 작업 (연출)
     // 서서히 커지는 느낌
@@ -59,13 +60,21 @@ public class Monster : Unit
 
         // 기본 체력은 5로 설정한다.
         HP = 5.0f;
-        GetDamage(5.0f);
     }
 
     public GameObject effectPrefab; // 이펙트 연결
 
     public void GetDamage(double dmg)
     {
+        // 죽었다면 이 작업이 호출되지 않게 합니다.
+        if (isDead) return;
+
+        // HitText 처리
+        Manager.Pool.Pooling("Hit").get((value) =>
+        {
+            value.GetComponent<HitText>().Init(transform.position, dmg);
+        });
+
         HP -= dmg; // 유닛의 체력을 데미지만큼 깎는다.
         if (HP <= 0)
         {
@@ -105,6 +114,13 @@ public class Monster : Unit
             SetAnimator("isMOVE"); // 이동모드로 변경합니다.
 
         }
+
+        // 공격 테스트
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            GetDamage(1);
+        }
+
         #region 필기
         // 1. transform.position : 현재 오브젝트의 위치를 나타냅니다.
         // 2. Vector3 : 3D 환경의 좌표계 (X,Y,Z 축) 구성
