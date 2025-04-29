@@ -38,7 +38,7 @@ public class HitText : MonoBehaviour
         transform.parent = B_Canvas.instance.transform;
 
         // 일정 시간 뒤에 반납을 진행
-        Release();
+        // Release();
     }
 
     // 피격 텍스트 반납 코드
