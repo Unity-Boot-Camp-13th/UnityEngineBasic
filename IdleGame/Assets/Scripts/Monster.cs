@@ -88,29 +88,41 @@ public class Monster : Unit
             // Instantiate(effectPrefab, transform.position, Quaternion.identity);
             // 로드한 값을 생성한다.
 
-            MonsterRelease();
-
+            
             // 이펙트를 몬스터의 좌표 위치로 생성
             Manager.Pool.Pooling(effectPrefab.name).get(value =>
             {
                 value.transform.position = transform.position;
             });
+            
+
+           
 
             // 코인 드랍 기능 추가
             Manager.Pool.Pooling("Coin_Move").get(value =>
             {
                 value.GetComponent<CoinMove>().Init(transform.position);
             });
+
+            // 아이템 드랍 기능 추가
+            // 현재 아이템 테이블이 따로 구현이 안 돼있기 때문에 고정 값 설정
+            // 변수를 만들어서 편하게 수정하시거나, 이후에 아이템 관련 데이터 추가해서 그 값만큼 처리하게 수정
+            for (int i = 0; i < 4; i++)
+            {
+                Manager.Pool.Pooling("ItemObject").get((value) =>
+                {
+                    value.GetComponent<ItemObject>().Init(transform.position);
+                });
+            }
+
+            // 몬스터 반납
+            Manager.Pool.pool_dict["Monster"].Release(gameObject);
         }
     }
 
     public void MonsterInit() => StartCoroutine(OnSpawn());
 
-    private void MonsterRelease()
-    {
-        Manager.Pool.pool_dict["Monster"].Release(gameObject);
-    }
-
+    
     // 유니티 라이프 싸이클 함수
     private void Update()
     {

@@ -18,7 +18,7 @@ public class Attack : MonoBehaviour
     // 공격이 적중하면 적용될 이펙트
     Dictionary<string, ParticleSystem> attacks_enter = new Dictionary<string, ParticleSystem>();
 
-
+    
     private void Awake()
     {
         // Attack 컴포넌트를 연결한 기준으로 자식 값에 접근하는 코드 GetChild(0)
@@ -64,6 +64,7 @@ public class Attack : MonoBehaviour
         // 새롭게 hit 가 false 가 되면 작동할 수 있게 설정합니다.
         if (hit) return;
 
+        target_pos = target.position;
         target_pos.y = 1.0f; // 현재 위치하고 있는 타겟의 위치와 y 축 길이를 맞춰주기
 
         // 공격 위치가 타겟 지점으로 이동하도록 설정
