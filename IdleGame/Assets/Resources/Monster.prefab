@@ -297,14 +297,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d6bda0c33a85e4abf2e0808536ef5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 5
+  HP: 1
   ATK: 0
   ATK_SPEED: 0
   A_RANGE: 0
   T_RANGE: 0
   target: {fileID: 0}
+  attack_transform: {fileID: 0}
   speed: 1
-  effectPrefab: {fileID: 1429954232896169633, guid: fb979134fe57ec64ca82a122ebefe648,
+  effectPrefab: {fileID: 8205706795460263314, guid: d5c01ee88bc2810498be3b1df9118a1c,
     type: 3}
 --- !u!1 &5766980710999772011
 GameObject:

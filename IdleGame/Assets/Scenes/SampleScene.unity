@@ -255,6 +255,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &106977982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6934575154026939458, guid: a037e900b8b3625478a089de0aae0f4a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1028998592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &153574378
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,13 +776,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6934575154026939458, guid: a037e900b8b3625478a089de0aae0f4a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1262730100}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7247946987302838346, guid: a037e900b8b3625478a089de0aae0f4a,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1669474453}
   m_SourcePrefab: {fileID: 100100000, guid: a037e900b8b3625478a089de0aae0f4a, type: 3}
+--- !u!1 &1262730099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1262730100}
+  m_Layer: 0
+  m_Name: attack_trans
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1262730100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262730099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 1.273, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 106977982}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1286468701
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,9 +1036,10 @@ MonoBehaviour:
   HP: 0
   ATK: 0
   ATK_SPEED: 0
-  A_RANGE: 3
-  T_RANGE: 5
+  A_RANGE: 5
+  T_RANGE: 10
   target: {fileID: 0}
+  attack_transform: {fileID: 1262730100}
 --- !u!1 &2060490552
 GameObject:
   m_ObjectHideFlags: 0

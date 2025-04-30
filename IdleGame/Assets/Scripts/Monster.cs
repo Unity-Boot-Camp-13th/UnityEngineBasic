@@ -78,7 +78,6 @@ public class Monster : Unit
             value.GetComponent<HitText>().Init(transform.position, dmg);
         });
 
-        
 
         HP -= dmg; // 유닛의 체력을 데미지만큼 깎는다.
 
@@ -89,7 +88,8 @@ public class Monster : Unit
             // Instantiate(effectPrefab, transform.position, Quaternion.identity);
             // 로드한 값을 생성한다.
 
-            
+            MonsterRelease();
+
             // 이펙트를 몬스터의 좌표 위치로 생성
             Manager.Pool.Pooling(effectPrefab.name).get(value =>
             {
@@ -106,6 +106,10 @@ public class Monster : Unit
 
     public void MonsterInit() => StartCoroutine(OnSpawn());
 
+    private void MonsterRelease()
+    {
+        Manager.Pool.pool_dict["Monster"].Release(gameObject);
+    }
 
     // 유니티 라이프 싸이클 함수
     private void Update()

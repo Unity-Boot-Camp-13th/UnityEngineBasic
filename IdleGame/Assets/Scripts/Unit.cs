@@ -17,6 +17,8 @@ public class Unit : MonoBehaviour
 
 	[Header("타겟 위치")]
 	public Transform target;
+	public Transform attack_transform;
+
 
 	protected virtual void Start()
 	{
@@ -24,9 +26,21 @@ public class Unit : MonoBehaviour
 		// 코드 내에서 Animator로 인식하고, Animator 의 필드나 메소드를 사용할 수 있습니다.
 	}
 
+	protected virtual void AttackObject()
+	{
+		Debug.Log("이벤트 테스트");
+
+		Manager.Pool.Pooling("Attack").get((value) =>
+		{
+			value.transform.position = attack_transform.position;
+			// 일반적으로 무기의 맨 앞 부분쪽을 위치로 잡습니다.
+			value.GetComponent<Attack>().Init(target, 1, "ATK01");
+		});
+	}
+
 	protected void SetAnimator(string temp)
 	{
-		// 공격
+		// [공격]
 		if (temp == "isATTACK")
 		{
 			animator.SetTrigger("isATTACK");

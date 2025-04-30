@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 
@@ -13,7 +12,6 @@ public class HitText : MonoBehaviour
 
     private void Start()
     {
-        
     }
 
     private void Update()
@@ -46,6 +44,13 @@ public class HitText : MonoBehaviour
     {
         Manager.Pool.pool_dict["Hit"].Release(gameObject);
     }
+
+    // 내가 작성한 피격 테스트 반납 코드
+    public void HitTextRelease()
+    {
+        Release();
+    }
+
 
     // 추가로 고민해볼 만한 것
     // 일반 데미지와 크리티컨 데미지 구현
