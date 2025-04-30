@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-	Animator animator;
+	[HideInInspector] public Animator animator;
 	[Header("플레이어 능력치")]
 	// 능력치 관련 자료형은 방치형 기주능로는 데이터를 좀 크게 잡는 편
 	public double HP;
@@ -28,14 +28,7 @@ public class Unit : MonoBehaviour
 
 	protected virtual void AttackObject()
 	{
-		Debug.Log("이벤트 테스트");
-
-		Manager.Pool.Pooling("Attack").get((value) =>
-		{
-			value.transform.position = attack_transform.position;
-			// 일반적으로 무기의 맨 앞 부분쪽을 위치로 잡습니다.
-			value.GetComponent<Attack>().Init(target, 1, "ATK01");
-		});
+		
 	}
 
 	protected void SetAnimator(string temp)

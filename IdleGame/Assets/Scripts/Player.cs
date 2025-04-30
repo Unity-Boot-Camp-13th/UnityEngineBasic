@@ -6,6 +6,26 @@ public class Player : Unit
     Vector3 pos; // 좌표계
     Quaternion quat; // 회전 값
 
+    protected override void AttackObject()
+    {
+        if (target.TryGetComponent<Monster>(out var u) && u.HP <= 0)
+        {
+            // 공격 트리거 취소
+            animator.ResetTrigger("isATTACK");
+
+            SetAnimator("isIDLE");
+            return;
+        }
+
+
+        Manager.Pool.Pooling("Attack").get((value) =>
+        {
+            value.transform.position = attack_transform.position;
+            // 일반적으로 무기의 맨 앞 부분쪽을 위치로 잡습니다.
+            value.GetComponent<Attack>().Init(target, 1, "ATK01");
+        });
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -54,4 +74,6 @@ public class Player : Unit
             SetAnimator("isATTACK");
         }
     }
+
+    
 }

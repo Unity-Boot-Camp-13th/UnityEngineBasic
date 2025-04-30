@@ -6,12 +6,13 @@ public class CoinMove : MonoBehaviour
 {
     Vector3 target; // 위치
 
+    // 5개의 코인
+    RectTransform[] rects = new RectTransform[5];
+
     public float distance; // 거리
     public float speed; // 코인 이동 속도
     public float item_move_speed; // 코인 이동 속도
 
-    // 5 개의 코인
-    RectTransform[] rects = new RectTransform[5];
 
     private void Awake()
     {
@@ -37,7 +38,7 @@ public class CoinMove : MonoBehaviour
             // --> 인스펙터 상에서 보이는 posX, posY의 위치
         }
         // 캔버스 쪽으로 트랜스폼 연결
-        transform.parent = B_Canvas.instance.transform;
+        transform.parent = B_Canvas.instance.GetLayer(0);
 
         // 코루틴 작동
         StartCoroutine(Move());

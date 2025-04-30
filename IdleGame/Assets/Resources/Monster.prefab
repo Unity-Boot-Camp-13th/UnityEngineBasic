@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d6bda0c33a85e4abf2e0808536ef5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 1
+  HP: 10
   ATK: 0
   ATK_SPEED: 0
   A_RANGE: 0
