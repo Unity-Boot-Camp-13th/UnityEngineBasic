@@ -51,7 +51,7 @@ public class Player : Unit
         }
         else if (targetDistance <= A_RANGE)
         {
-            SetAnimator("isAttack");
+            SetAnimator("isATTACK");
         }
     }
 }

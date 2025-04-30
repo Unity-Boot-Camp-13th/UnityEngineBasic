@@ -37,6 +37,8 @@ public class Attack : MonoBehaviour
         }
     }
 
+    
+
     public void Init(Transform t, double dmg, string key)
     {
         // 전달받은 값으로 타겟 설정, 응시
@@ -79,6 +81,8 @@ public class Attack : MonoBehaviour
                 // 유닛이 가진 체력을 데미지만큼 감소합니다.
                 target.GetComponent<Unit>().HP -= damage;
                 // 감소하면 플레이어나 몬스터가 데미지 처리하는 함수가 처리되도록 설정해줄 필요가 있습니다.
+                target.GetComponent<Monster>().GetDamage(damage);
+                
                 // 데미지 적용 후 비활성화
                 attacks[attack_key].gameObject.SetActive(false);
 
