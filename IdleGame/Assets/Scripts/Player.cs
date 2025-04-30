@@ -1,30 +1,44 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class Player : Unit
 {
     Vector3 pos; // 좌표계
     Quaternion quat; // 회전 값
+    GameObject attack;
 
     protected override void AttackObject()
     {
         if (target.TryGetComponent<Monster>(out var u) && u.HP <= 0)
         {
+            Debug.Log("몬스터죽음");
             // 공격 트리거 취소
+            if (attack != null)
+            {
+                Manager.Pool.pool_dict["Attack"].Release(attack);
+                attack = null;
+            }
             animator.ResetTrigger("isATTACK");
-
+            animator.SetBool("isATTACK", false);
             SetAnimator("isIDLE");
             return;
         }
-
-
-        Manager.Pool.Pooling("Attack").get((value) =>
+        else
         {
-            value.transform.position = attack_transform.position;
-            // 일반적으로 무기의 맨 앞 부분쪽을 위치로 잡습니다.
-            value.GetComponent<Attack>().Init(target, 1, "ATK01");
-        });
+            animator.SetTrigger("isATTACK");
+
+            Manager.Pool.Pooling("Attack").get((value) =>
+            {
+                attack = value;
+                value.transform.position = attack_transform.position;
+                // 일반적으로 무기의 맨 앞 부분쪽을 위치로 잡습니다.
+                value.GetComponent<Attack>().Init(target, 1, "ATK01");
+            });
+        }
     }
+    
+
 
     protected override void Start()
     {
@@ -72,6 +86,11 @@ public class Player : Unit
         else if (targetDistance <= A_RANGE)
         {
             SetAnimator("isATTACK");
+        }
+
+        if (target == null)
+        {
+            animator.SetBool("isATTACK", false);
         }
     }
 

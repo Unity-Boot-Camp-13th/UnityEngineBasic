@@ -28,7 +28,7 @@ public class Unit : MonoBehaviour
 
 	protected virtual void AttackObject()
 	{
-		
+		animator.ResetTrigger("isATTACK");
 	}
 
 	protected void SetAnimator(string temp)

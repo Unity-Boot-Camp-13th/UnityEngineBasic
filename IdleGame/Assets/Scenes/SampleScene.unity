@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 1
-  spawnTime: 40
+  spawnTime: 15
 --- !u!4 &31436107
 Transform:
   m_ObjectHideFlags: 0

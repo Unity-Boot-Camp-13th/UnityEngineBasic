@@ -16,7 +16,6 @@ public class ItemObject : MonoBehaviour
     // 아이템 레어도별로 처리하는 코드
     void ItemRare()
     {
-        if (ischeck) return;
         ischeck = true;
         transform.rotation = Quaternion.identity; // 그대로 값 넘어가도록 회전 값 0
         // 아이템 텍스트 활성화
@@ -35,12 +34,6 @@ public class ItemObject : MonoBehaviour
 
     public void Init(Vector3 pos)
     {
-        // 풀링 재사용 시 이전 상태 초기화
-        ischeck = false;
-        ItemText.gameObject.SetActive(false);
-
-
-
         // 전달받은 값을 기준으로 그 주변에 위치할 수 있도록 범위 설정
         Vector3 item_pos = new Vector3
                            (pos.x + (Random.insideUnitSphere.x * range), 
