@@ -5,7 +5,6 @@ public class TitleManager : MonoBehaviour
 {
     // 컨트롤 버튼을 통해서 오픈해줄 메뉴
     public GameObject ControlKeyMenu;
-    public GameObject CloseMenu;
 
     public void OnStartButtonEnter()
     {

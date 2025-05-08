@@ -2249,8 +2249,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uAC8C\uC784\uC73C\uB85C \uB2F9\uC2E0\uC758 \uC624\uB298 \uC6B4\uC138\uB97C
     \uD655\uC778\uD574\uBCF4\uC138\uC694\n\n[\uC870\uC791 \uD0A4]\n\u2190, \u2192
-    \uD0A4 : \uC88C\uC6B0 \uC774\uB3D9\nspace\uBC14 : \uC810\uD504\n\u2193 \uD0A4
-    : \uC2AC\uB77C\uC774\uB4DC"
+    \uD0A4 : \uC88C\uC6B0 \uC774\uB3D9\nspace\uBC14 : \uC810\uD504"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a06d84edbd2038c4eaecd8ac3a074196, type: 2}
   m_sharedMaterial: {fileID: 8653508268892226152, guid: a06d84edbd2038c4eaecd8ac3a074196, type: 2}
@@ -2359,7 +2358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControlKeyMenu: {fileID: 767217264}
-  CloseMenu: {fileID: 0}
 --- !u!4 &1120666297
 Transform:
   m_ObjectHideFlags: 0
@@ -2432,7 +2430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBC31\uBBF8\uD130\uB9CC \uB2EC\uB824\uBD10 \u314E"
+  m_text: "\uD589\uC6B4\uC758 \uB2EC\uB9AC\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 699a38d69770a864f9565c70ab6db4a9, type: 2}
   m_sharedMaterial: {fileID: 205111126321528452, guid: 699a38d69770a864f9565c70ab6db4a9, type: 2}
@@ -2459,7 +2457,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 105
+  m_fontSize: 99.65
   m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 1

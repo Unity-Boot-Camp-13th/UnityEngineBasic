@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using UnityChan;
 using UnityEngine;
 
@@ -6,62 +7,67 @@ public class PlayerController : MonoBehaviour
     CharacterController controller;                          // 컴포넌트
     Animator animator;
 
-    private Vector3 moveVector;                              // 방향 백터
+    private Vector3 moveVector;
+    private bool hasStarted = false;
+
+    // 방향 백터
     [SerializeField] private float speed = 5.0f;             // 플레이어의 이동 속도
     [SerializeField] private float vertical_velocity = 0.0f; // 점프를 위한 수직 속도
     [SerializeField] private float gravity = 12.0f;          // 중력 값
     [SerializeField] private float jump = 8.0f;
 
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
 
     void Update()
     {
+        // 처음 진입했을 때 카메라 무빙
         if (Time.timeSinceLevelLoad < CameraController.camera_animate_duration)
         {
-            controller.Move(Vector3.forward * speed * Time.deltaTime);
             return;
         }
+        
+        // GroundCheck
+        bool grounded = controller.isGrounded;
 
+        // 입력 읽기
+        float h = Input.GetAxisRaw("Horizontal");
+        bool wantRun = grounded && hasStarted;
+        bool wantJump = !grounded;
+        bool wantSlide = grounded && Input.GetKey(KeyCode.DownArrow);
 
-        moveVector = Vector3.zero; // 방향 백터 값 리셋
+        // 애니메이션 파라미터 세팅
+        animator.SetBool("IsRun", wantRun);
+        animator.SetBool("IsJump", wantJump);
+        animator.SetBool("IsSlide", wantSlide);
 
-        if (controller.isGrounded)
+        // 물리 이동
+        if (grounded)
+            vertical_velocity = 0;
+
+        if (grounded &&
+            Input.GetKey(KeyCode.Space))
         {
-            vertical_velocity = 0.0f;
-
-            // 점프 기능 추가
-            if (Input.GetKey(KeyCode.Space))
-            {
-                vertical_velocity = jump;
-                SetAnimator("IsJump");
-            }
+            vertical_velocity = jump;
         }
-        else
+        else if (!grounded)
         {
             vertical_velocity -= gravity * Time.deltaTime;
         }
 
-        // 1. 좌우 이동
-        moveVector.x = Input.GetAxisRaw("Horizontal") * speed;
-        // 2. 점프 관련
+        if (!hasStarted && Mathf.Abs(h) > 0.1f) 
+            hasStarted = true;
+
+        // 이동 벡터 계산
+        moveVector.x = h * speed;
         moveVector.y = vertical_velocity;
-        // 3. 앞으로 이동
-        moveVector.z = speed;
-        // 설정한 방향대로 이동 진행
+        moveVector.z = hasStarted ? speed : 0f;
+
         controller.Move(moveVector * Time.deltaTime);
-    }
-
-    void SetAnimator(string temp)
-    {
-        // 기본 애니메이터 초기화
-        animator.SetBool("IsRun", false);
-        animator.SetBool("IsJump", false);
-        animator.SetBool("IsSlide", false);
-
-        animator.SetBool(temp, true);
     }
 }
