@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     Vector3 moveVector;                                     // 카메라가 매 프레임 이동할 위치
 
     float transition = 0.0f;                                // 보간 값(전환용)
-    public static float camera_animate_duration = 3.0f;            // 카메라를 이용해서 에니메이션 연출할 때 쓸 지속 시간
+    public static float camera_animate_duration = 3.0f;     // 카메라를 이용해서 에니메이션 연출할 때 쓸 지속 시간
     public Vector3 animate_offset = new Vector3(0, 5, 5);   // 에니메이션을 위한 시작 오프셋
 
     void Start()
