@@ -1,8 +1,11 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class ScoreManager : MonoBehaviour
 {
+    public TextMeshProUGUI startCounting;
+
     // 점수
     // 1. 인게임 내에서 간단하게 사용할 거면 필드로 만든다.
     // 2. 게임을 끄고 난 뒤에도 점수가 유지되어야 하는 상황일 경우라면
@@ -42,6 +45,7 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         SetTMPText();
+        StartCoroutine(C_Init());
     }
     // String Format $
     // $"{변수}" 를 적을 경우 해당 변수가 문자열로 넘어가게 됩니다.
@@ -75,5 +79,22 @@ public class ScoreManager : MonoBehaviour
         levelText.text = $"Level : {level}";
         perScoreText.text = $"Goal : {levelperscore: #,##0}";
         
+    }
+
+    IEnumerator C_Init()
+    {
+        WaitForSeconds waitfor1seconds = new WaitForSeconds(1);
+
+        for (int i = 3; i >= 1; i--)
+        {
+            startCounting.text = i.ToString();
+            Debug.Log($"남은시간 : {i}");
+            yield return waitfor1seconds;
+        }
+
+        startCounting.fontSize = 200;
+        startCounting.text = "Start";
+        yield return waitfor1seconds;
+        startCounting.enabled = false;
     }
 }
