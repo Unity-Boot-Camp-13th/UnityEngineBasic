@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Stair
   - Obstacle
+  - Coin
+  - Box
   layers:
   - Default
   - TransparentFX

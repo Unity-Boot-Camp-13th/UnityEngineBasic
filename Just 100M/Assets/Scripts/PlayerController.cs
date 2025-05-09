@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveVector;
     private bool isJumping = false;
+    [HideInInspector] public bool isDead = false;
+    CoinCollector coinCollector;
 
 
     // 방향 백터
@@ -22,12 +24,17 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 0.2f;
     public LayerMask groundLayer;
 
+    // 플레이어 동결용
+    private bool isFrozen = false;
+    private float freezeEndTime = 0f;
+
 
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        coinCollector = GetComponent<CoinCollector>();
     }
 
 
@@ -39,13 +46,28 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if (isFrozen)
+        {
+            // real time 으로 6초가 지났으면 해동
+            if (Time.realtimeSinceStartup >= freezeEndTime)
+            {
+                isFrozen = false;
+                animator.SetBool("IsRun", true);
+            }
+            else
+            {
+                return; // 동결 해제 전까지 나머지 로직 무시
+            }
+        }
+
         // 자동 전진
         moveVector = Vector3.forward * speed;
         moveVector.y = vertical_velocity;
 
         // 달리기 설정
         if (transform.position.y < 0.002f &&
-            transform.position.y > 0f)
+            transform.position.y > 0f &&
+            !isFrozen)
         {
             isJumping = false;
             animator.SetBool("IsJump", false);
@@ -76,5 +98,28 @@ public class PlayerController : MonoBehaviour
 
         // 이동 처리
         controller.Move(moveVector * Time.deltaTime);
+
+        // 죽음 처리
+        if (transform.position.y < -1f)
+        {
+            isDead = true;
+        }
+
+        // 몬스터 등장하면 잠시 멈춤
+        if (coinCollector.monsterInstance != null)
+        {
+            Freeze(6f);
+            coinCollector.monsterInstance = null;
+        }
+    }
+
+    // <summary>
+    /// 플레이어를 real 시간 기준으로 seconds 초 동안 멈춥니다.
+    /// </summary>
+    private void Freeze(float seconds)
+    {
+        isFrozen = true;
+        freezeEndTime = Time.realtimeSinceStartup + seconds;
+        animator.SetBool("IsRun", false);
     }
 }

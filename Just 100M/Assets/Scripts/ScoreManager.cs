@@ -26,26 +26,24 @@ public class ScoreManager : MonoBehaviour
     // 
     // 2-5. CSV              : 엑셀 파일에 필요한 데이터들을 나열해두고, C# 스크립트를 통해 해당 값을 얻어와서 적용합니다.
     //                         주로 맵 패턴, 스크립트 대화 호출, 기본적인 데이터
-    private float score = 0.0f;
+    
 
-    // 점수에 따른 난이도 표현
-    private float level = 1;
+    // 남은 시간
+    private float time = 64;
 
-    // 최대 레벨
-    private int max_level = 10;
+    // 타임 오버
+    [HideInInspector] public bool timeOver = false;
 
     // 레벨당 요구 점수
     private int levelperscore = 100;
 
     // 텍스트 UI
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI levelText;    // 현재 레벨
-    public TextMeshProUGUI perScoreText; // 다음 레벨까지의 점수
+    public TextMeshProUGUI timeText;    // 남은 시간
 
     private void Start()
     {
-        SetTMPText();
         StartCoroutine(C_Init());
+        timeText.text = $"남은 시간 : 60초";
     }
     // String Format $
     // $"{변수}" 를 적을 경우 해당 변수가 문자열로 넘어가게 됩니다.
@@ -55,30 +53,42 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (score >= levelperscore)
+        // 처음 진입했을 때 카메라 무빙
+        if (Time.timeSinceLevelLoad < CameraController.camera_animate_duration)
         {
-            LevelUp();
+            return;
         }
 
-        score += Time.deltaTime;
-        scoreText.text = ((int)score).ToString();
-    }
-
-    void LevelUp()
-    {
-        if (level == max_level)
-            return;
-
-        levelperscore *= 3;
-        level++;
         SetTMPText();
+
+        if (time <= 0f)
+        {
+            timeOver = true;
+            time = 0f;
+        }
     }
 
-    public void SetTMPText()
+    // void LevelUp()
+    // {
+    //     if (level == max_level)
+    //         return;
+    // 
+    //     levelperscore *= 3;
+    //     level++;
+    //     SetTMPText();
+    // }
+
+    // public void SetTMPText()
+    // {
+    //     levelText.text = $"Level : {level}";
+    //     perScoreText.text = $"Goal : {levelperscore: #,##0}";
+    //     
+    // }
+
+    void SetTMPText()
     {
-        levelText.text = $"Level : {level}";
-        perScoreText.text = $"Goal : {levelperscore: #,##0}";
-        
+        time -= Time.deltaTime;
+        timeText.text = $"남은 시간 : {(int)time}초";
     }
 
     IEnumerator C_Init()
