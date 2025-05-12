@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6254075105666767834}
   - component: {fileID: 8138399625386863475}
   - component: {fileID: 1626347180479321191}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 8935591492819880464}
   - component: {fileID: 248717664732532486}
   - component: {fileID: -545430614773335457}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,3 +234,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2468371513533b49a3da45aead7ee24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5

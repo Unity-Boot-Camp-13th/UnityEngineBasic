@@ -20,7 +20,8 @@ public class Circle : MonoBehaviour
             float degree = - radian * Mathf.Rad2Deg; // 오브젝트가 중앙을 바라보도록
 
             Quaternion rotation = Quaternion.Euler(0, degree, 0);
-            Instantiate(prefab, pos, rotation);
+            var go = Instantiate(prefab, pos, rotation);
+            go.transform.parent = transform;
         }
     }
 }
