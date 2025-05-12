@@ -8,6 +8,11 @@ public class PlayerFire : MonoBehaviour
 
     private void Update()
     {
-        
+        if (Input.GetButtonDown("Fire1"))
+        {
+            var bullet = Instantiate(bulletFactory);
+
+            bullet.transform.position = firePosition.transform.position;
+        }
     }
 }
