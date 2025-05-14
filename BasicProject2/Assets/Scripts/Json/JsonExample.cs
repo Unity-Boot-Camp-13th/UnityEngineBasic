@@ -1,0 +1,68 @@
+using System;
+using System.IO;
+using UnityEngine;
+// Json 파일
+// 오브젝트의 정보를 "key", "value" 의 형태로 저장해서 전달해주는 포맷(format)
+
+// 웹문서 기준으로는 json vs xml
+
+
+public class JsonExample : MonoBehaviour
+{
+    // Json -> class 의 형태로 읽어서 적용
+    public class Data
+    {
+        public int idx;
+        public string contents;
+        public string desc;
+    }
+
+    [Serializable]
+    public class Tip
+    {
+        public int idx;
+        public string contents;
+        public string desc;
+    }
+
+    [Serializable]
+    public class TipData
+    {
+        public Tip[] tip;
+    }
+
+    public Data data;
+    public TipData tipData;
+
+    [ContextMenu("팁 로드")]
+    public void LoadTips()
+    {
+        // 리소스 폴더 위치에서 로드하기
+        var jsonFile = Resources.Load<TextAsset>("data");
+        // json 파일은 Assets 에서 TextAsset 으로 처리됩니다.
+        tipData = JsonUtility.FromJson<TipData>(jsonFile.text);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this); // 유니티 에디터에서의 변경 사항 저장
+#endif
+
+    }
+
+    [ContextMenu("데이터 세이브")]
+    // 클래스 데이터를 Json 파일에 저장합니다.
+    void SaveData()
+    {
+        // JsonUtility 는 유니티에서 제공해주는 Json 작업을 위해 사용하는 클래스입니다.
+        // 경로 설정
+        // Application.dataPath (프로젝트의 폴더 내부)
+        // Application.streamingAssetsPath(Assets + StreamingAssets)
+        // Application.persistentDataPath : 각 환경체제에서 
+
+    }
+
+    [ContextMenu("데이터 로드")]
+    // Json 파일을 이용해 클래스 쪽으로 로드합니다.
+    void LoadData()
+    {
+        string path = Path.Combine(Application.dataPath + "/Data")
+    }
+}
