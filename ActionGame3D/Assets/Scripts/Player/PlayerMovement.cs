@@ -12,9 +12,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Animator animator;
+    PlayerAttack playerAttack;
 
     // 공격, 스킬, 대시에 관한 시간
     float lastAttackTime, lastSkillTime, lastDashTime;
+
     public bool attacking = false;
     public bool dashing = false;
 
@@ -46,9 +48,9 @@ public class PlayerMovement : MonoBehaviour
                 // 설정하는 것으로 조건을 바로 만족하게 됩니다.
                 // 수행 끝나면 끝
                 animator.SetTrigger("Attack");
-                
-                yield return new WaitForSeconds(1.0f);
 
+                playerAttack.NormalAttack();
+                yield return new WaitForSeconds(1.0f);
             }
         }
     }
@@ -72,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("Skill", true);
             lastSkillTime = Time.time;
+            playerAttack.SkillAttack();
         }
     }
 
@@ -82,17 +85,25 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDashDown()
     {
-        dashing = true;
+        if (Time.time - lastDashTime > 1f)
+        {
+            dashing = true;
+            animator.SetTrigger("Dash");
+            lastDashTime = Time.time;
+            playerAttack.DashAttack();
+        }
     }
 
     public void OnDashUp()
     {
         dashing = false;
+        animator.SetTrigger("Attack");
     }
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
     private void Update()
