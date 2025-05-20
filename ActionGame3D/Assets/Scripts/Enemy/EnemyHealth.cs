@@ -45,7 +45,7 @@ public class EnemyHealth : MonoBehaviour
     {
         damaged = true;
         currentHealth -= amount;
-        if (currentHealth <= 0 && isDead)
+        if (currentHealth <= 0 && !isDead)
         {
             Death();
         }
@@ -76,6 +76,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void Death()
     {
+        StageController.Instance.AddPoint(10); // 점수 획득
+
         isDead = true;
         // 죽었을 때, 맵을 뚫고 아래로 가라앉는 처리를 진행하기 위한 처리
         transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;

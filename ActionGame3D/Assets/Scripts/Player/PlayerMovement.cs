@@ -116,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
             if (v < 0f)
                 back = -1f;
 
+            animator.SetFloat("Direction", back * (Mathf.Atan2(h, v) * Mathf.Rad2Deg));
+
             animator.SetFloat("Speed", new Vector2(h,v).magnitude);
             // magnitude == 벡터의 길이, 크기
 

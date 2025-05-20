@@ -15,7 +15,7 @@ public class PlayerHealth : MonoBehaviour
     Animator anim;                      // 애니메이터
     AudioSource playerAudio;            // 오디오소스
     PlayerMovement playerMovement;      // 플레이어 움직임
-    bool isDead;                        // 죽음 확인용 변수
+    public bool isDead; // 죽음 확인용 변수
     bool isDamaged;                     // 데미지 확인용 변수
 
     private void Awake()
@@ -64,8 +64,9 @@ public class PlayerHealth : MonoBehaviour
 
     void Death()
     {
+        StageController.Instance.FinishGame();
         isDead = true;
         anim.SetTrigger("Die");
-        playerMovement.enabled = false; //PlayerMovement�� ���� ��Ȱ��ȭ
+        playerMovement.enabled = false; //PlayerMovement에 대한 비활성화
     }
 }
