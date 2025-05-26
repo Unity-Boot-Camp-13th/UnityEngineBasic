@@ -18,7 +18,7 @@ public class Inventory
     }
 
     // 추가 기능 (추가 가능 상태에 대한 확인 후 등록)
-    public void Add(Harvest harvest)
+    public void Add(Item item)
     {
         // 'foreach' or 'for' ?
         // 1. 일반적으로는 for 문 추천
@@ -33,10 +33,10 @@ public class Inventory
         // 1. 아이템 추가 가능 여부 체크한 슬롯 등록
         foreach (var slot in slots)
         {
-            if (slot.type == harvest.type &&
+            if (slot.item_name == item.data.itemName &&
                  slot.Addable())
             {
-                slot.Add(harvest);
+                slot.Add(item);
                 return;
             }
         }
@@ -44,9 +44,9 @@ public class Inventory
         // 타입 None 에 대한 처리
         foreach (var slot in slots)
         {
-            if (slot.type == CollectType.None)
+            if (slot.item_name == "")
             {
-                slot.Add(harvest);
+                slot.Add(item);
                 return;
             }
         }

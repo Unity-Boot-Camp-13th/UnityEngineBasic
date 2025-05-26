@@ -39,7 +39,7 @@ public class InventoryUI : MonoBehaviour
         {
             for (int i = 0; i < slots.Count; i++)
             {
-                if (player.Inventory.slots[i].type != CollectType.None)
+                if (player.Inventory.slots[i].item_name != "")
                 {
                     // 슬롯에 이미지와 개수 등을 갱신한다.
                     slots[i].SetSlot(player.Inventory.slots[i]);
@@ -54,7 +54,13 @@ public class InventoryUI : MonoBehaviour
 
     public void Remove(int slot_idx)
     {
-        player.Inventory.Remove(slot_idx);
-        SlotRenewal();
+        Item drop = GameManager.Instance.ItemManager.GetItem(player.Inventory.slots[slot_idx].item_name);
+        
+        if (drop != null)
+        {
+            player.Drop(drop);
+            player.Inventory.Remove(slot_idx);
+            SlotRenewal();
+        }
     }
 }

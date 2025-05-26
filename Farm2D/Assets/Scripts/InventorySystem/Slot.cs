@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public class Slot
 {
-    public CollectType type;
+    public string item_name;
     public int count;
     public int max_count;
     public Sprite icon;
     public Slot()
     {
-        type = CollectType.None;
+        item_name = "";
         count = 0;
         max_count = 10; // 본인이 기본으로 설정할 숫자로 등록
 
@@ -25,10 +25,10 @@ public class Slot
     }
 
     // 추가 가능 여부에 대한 함수
-    public void Add(Harvest harvest) 
+    public void Add(Item item) 
     {
-        type = harvest.type;
-        icon = harvest.icon;
+        item_name = item.data.itemName;
+        icon = item.data.icon;
         count++;
     }
 
@@ -41,7 +41,7 @@ public class Slot
             if (count == 0)
             {
                 icon = null;
-                type = CollectType.None;
+                item_name = "";
             }
         }
     }
