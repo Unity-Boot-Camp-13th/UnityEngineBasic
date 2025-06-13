@@ -1,16 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TowerManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    // 타워 전용 풀
+    public List<TowerData> towerPool;
 
-    // Update is called once per frame
-    void Update()
+    public Transform towerParent;
+
+    public void RandSpawnTower(Vector2 spawnPos)
     {
-        
+        if (GameManager.Instance.Cost())
+        {
+
+        }
     }
 }
