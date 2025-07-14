@@ -4,28 +4,35 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
-public interface IitemRepository
+public interface IItemRepository
 {
     Item FindById (int id);
+
+    IReadOnlyList<Item> FindAll ();
 }
 
-public class TestItemRepository : IitemRepository
+public class ItemRepository : IItemRepository
 {
+    private readonly string Path = "Data/items";
     private List<Item> _items;
 
-    public TestItemRepository()
+    public ItemRepository(IParser<ItemModelList> parser)
     {
-        _items = new List<Item>()
-        {
-            new Item(11001),
-            new Item(12001),
-            new Item(13001),
-            new Item(14001),
-            new Item(15001),
-            new Item(21001),
-        };
+        _items = parser.LoadFrom(Path).data.Select(model => ToItem(model)).ToList();
     }
 
-    public Item FindById(int id) => _items.Where(item => item.Id == id).First();
+    public IReadOnlyList<Item> FindAll()
+    {
+        return _items;
+    }
+
+    public Item FindById(int id)
+    {
+        return _items.Find(item => item.Id == id);
+    }
+
+    private Item ToItem(ItemModel model)
+    {
+        return new Item(model.item_id, model.item_name, model.attack_power, model.defense);
+    }
 }

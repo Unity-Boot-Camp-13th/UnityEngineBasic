@@ -2,48 +2,21 @@ using System.Collections.Generic;
 using Gpm.Ui;
 using UnityEngine;
 
-public class InventoryItemSlotData : InfiniteScrollData
-{
-    public string IconPath { get; }
-    public string GradePath { get; }
-    public InventoryItemSlotData(string iconPath, string gradePath)
-    {
-        IconPath = iconPath;
-        GradePath = gradePath;
-    }
-}
+
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private InfiniteScroll _scroll;
-    private IUserInventoryService _userInventoryService;
+    [SerializeField] private UserInventoryServiceLocaterSO _userInventoryServiceLocater;
 
+    
     private void Start()
     {
-        // List<ItemViewModel> unequippedItems = _userInventoryService.UnequippedItems;
-        // foreach (ItemViewModel item in unequippedItems)
-        // {
-        //     _scroll.InsertData(new InventoryItemSlotData(item.IconPath, item.GradePath));
-        // }
+        IReadOnlyList<UserInventoryItemModel> models = _userInventoryServiceLocater.Service.UnequippedItems;
 
-         _userInventoryService = new UserInventoryService();
-
-        List<int> wantedItemIds = new List<int>()
+        foreach (UserInventoryItemModel model in models)
         {
-            11001,
-            12001,
-            13001,
-            14001,
-            15001,
-            21001,
-        };
-
-        foreach (int itemId in wantedItemIds)
-        {
-            ItemViewModel model = _userInventoryService.GetItemViewModel(itemId);
-            _scroll.InsertData(new InventoryItemSlotData(model.IconPath, model.GradePath));
+            _scroll.InsertData(new InventoryItemSlotData(model, _userInventoryServiceLocater.Service.ItemService));
         }
     }
-
-
 }
